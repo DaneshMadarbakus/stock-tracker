@@ -1,6 +1,42 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
+interface Feature {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+const features: Feature[] = [
+  {
+    icon: "📈",
+    title: "Real-Time Prices",
+    description: "Get live stock prices and market data updated in real-time. Never miss a market movement again."
+  },
+  {
+    icon: "⭐",
+    title: "Smart Watchlists", 
+    description: "Create and manage personalized watchlists. Track your favorite stocks and monitor performance."
+  },
+  {
+    icon: "📊",
+    title: "Market Analysis",
+    description: "Access detailed charts, trends, and analytics to make informed investment decisions."
+  }
+];
+
+function FeatureCard({ feature }: { feature: Feature }) {
+  return (
+    <div className="text-center p-6 rounded-lg bg-background border border-border hover:border-accent/50 transition-colors">
+      <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+        <span className="text-2xl text-accent">{feature.icon}</span>
+      </div>
+      <h3 className="text-xl font-semibold mb-3 text-primary">{feature.title}</h3>
+      <p className="text-muted-foreground">{feature.description}</p>
+    </div>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -39,35 +75,9 @@ export default function Home() {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6 rounded-lg bg-background border border-border hover:border-accent/50 transition-colors">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-accent">📈</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-primary">Real-Time Prices</h3>
-              <p className="text-muted-foreground">
-                Get live stock prices and market data updated in real-time. Never miss a market movement again.
-              </p>
-            </div>
-            
-            <div className="text-center p-6 rounded-lg bg-background border border-border hover:border-accent/50 transition-colors">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-accent">⭐</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-primary">Smart Watchlists</h3>
-              <p className="text-muted-foreground">
-                Create and manage personalized watchlists. Track your favorite stocks and monitor performance.
-              </p>
-            </div>
-            
-            <div className="text-center p-6 rounded-lg bg-background border border-border hover:border-accent/50 transition-colors">
-              <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl text-accent">📊</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-primary">Market Analysis</h3>
-              <p className="text-muted-foreground">
-                Access detailed charts, trends, and analytics to make informed investment decisions.
-              </p>
-            </div>
+            {features.map((feature) => (
+              <FeatureCard key={feature.title} feature={feature} />
+            ))}
           </div>
         </div>
       </section>
