@@ -1,3 +1,6 @@
+import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
+
 export default function PublicLayout({
   children,
 }: {
@@ -5,11 +8,11 @@ export default function PublicLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Public navigation could go here */}
+      <Navbar />
       <main className="flex-1">
         {children}
       </main>
-      {/* Public footer could go here */}
+      <Footer />
     </div>
   );
 }
