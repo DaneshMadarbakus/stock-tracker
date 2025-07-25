@@ -53,7 +53,7 @@ export default function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link href="/dashboard">Get Started Free</Link>
+              <Link href="/overview">Get Started Free</Link>
             </Button>
             <Button variant="outline" size="lg" asChild>
               <Link href="#features">Learn More</Link>
@@ -92,7 +92,7 @@ export default function Home() {
             Join thousands of traders who trust StockTracker for their investment decisions.
           </p>
           <Button variant="secondary" size="lg" asChild>
-            <Link href="/dashboard">Launch Dashboard</Link>
+            <Link href="/overview">Launch Dashboard</Link>
           </Button>
         </div>
       </section>
