@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
+import { StockSearch } from "@/components/stock-search";
 
 const popularStocks = [
   { symbol: "AAPL", name: "Apple Inc.", sector: "Technology" },
@@ -23,13 +23,7 @@ export default function StocksPage() {
       </div>
 
       {/* Search Bar */}
-      <div className="max-w-md">
-        <Input
-          type="text"
-          placeholder="Search stocks (e.g., AAPL, Apple)"
-          className="py-3"
-        />
-      </div>
+      <StockSearch />
 
       {/* Popular Stocks */}
       <div>
