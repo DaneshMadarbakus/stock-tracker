@@ -18,7 +18,7 @@ export function Navbar() {
         <div className="flex flex-1 items-center justify-end">
           {/* Dashboard Button - visible on all screen sizes */}
           <Button asChild>
-            <Link href="/overview">Dashboard</Link>
+            <Link href="/stocks">Dashboard</Link>
           </Button>
         </div>
       </div>

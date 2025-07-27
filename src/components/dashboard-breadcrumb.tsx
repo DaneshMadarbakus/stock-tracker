@@ -4,8 +4,7 @@ import { usePathname } from "next/navigation";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
 const routeLabels: Record<string, string> = {
-  "/overview": "Overview",
-  "/search": "Search Stocks", 
+  "/stocks": "Stocks",
   "/watchlist": "My Watchlist",
   "/settings": "Settings",
 };
@@ -13,17 +12,40 @@ const routeLabels: Record<string, string> = {
 export function DashboardBreadcrumb() {
   const pathname = usePathname();
   
+  // Handle dynamic stock routes
+  const stockMatch = pathname.match(/^\/stocks\/([A-Z]+)$/);
+  if (stockMatch) {
+    const symbol = stockMatch[1];
+    return (
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/stocks" className="text-muted-foreground">
+              Stocks
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage className="text-foreground font-medium">
+              {symbol}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    );
+  }
+  
   const currentPageLabel = routeLabels[pathname] || "Dashboard";
   
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/overview" className="text-muted-foreground">
+          <BreadcrumbLink href="/stocks" className="text-muted-foreground">
             Dashboard
           </BreadcrumbLink>
         </BreadcrumbItem>
-        {pathname !== "/overview" && (
+        {pathname !== "/stocks" && (
           <>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
