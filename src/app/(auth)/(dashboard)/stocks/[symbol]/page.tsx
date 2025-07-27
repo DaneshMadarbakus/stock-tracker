@@ -1,7 +1,10 @@
+import { Suspense } from "react";
 import { BackButton } from "@/components/back-button";
 import { Button } from "@/components/ui/button";
 import { CompanyInfo } from "@/components/company-info";
 import { LiveStockPrice } from "@/components/live-stock-price";
+import { ChartServerWrapper } from "@/components/chart-server-wrapper";
+import { ChartSkeleton } from "@/components/chart-skeleton";
 import { getCompanyProfile } from "@/api/finnhub";
 
 export default async function StockPage({
@@ -55,11 +58,10 @@ export default async function StockPage({
         {/* Company Information */}
         <CompanyInfo profile={companyProfile} />
 
-        {/* Future: Price Chart */}
-        <div className="p-6 border rounded-lg bg-card">
-          <h3 className="font-semibold text-primary mb-2">Price Chart</h3>
-          <p className="text-muted-foreground">Coming soon...</p>
-        </div>
+        {/* Price Chart with Suspense */}
+        <Suspense fallback={<ChartSkeleton />}>
+          <ChartServerWrapper symbol={symbol} />
+        </Suspense>
       </div>
     </div>
   );

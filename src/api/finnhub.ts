@@ -14,7 +14,7 @@ interface CompanyProfile {
 }
 
 const FINNHUB_API_KEY = process.env.FINNHUB_API_KEY;
-const BASE_URL = process.env.FINNHUB_BASE_URL;
+const BASE_URL = process.env.FINNHUB_URL;
 
 export async function getCompanyProfile(
   symbol: string
