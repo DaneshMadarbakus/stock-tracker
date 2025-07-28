@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { ArrowBigRight } from "lucide-react";
 import { getUserWatchlistAction } from "@/actions/watchlist";
 import { getBulkQuotes } from "@/api/alpha-vantage";
 import { WatchlistRemoveButton } from "@/components/watchlist-remove-button";
+import { Button } from "@/components/ui/button";
 
 export default async function WatchlistPage() {
   const watchlistResult = await getUserWatchlistAction();
@@ -86,23 +88,32 @@ function WatchlistGrid({
 
 function WatchlistCard({ item, quote }: { item: any; quote: any }) {
   return (
-    <div className="p-4 border rounded-lg bg-card hover:shadow-md transition-shadow">
+    <div className="p-4 border rounded-lg bg-card transition-shadow">
       <div className="flex justify-between items-start mb-3">
-        <Link
-          href={`/stocks/${item.symbol}`}
-          className="hover:text-accent transition-colors cursor-pointer"
-        >
-          <div>
-            <h3 className="font-semibold text-lg">{item.symbol}</h3>
-            {quote && (
-              <p className="text-sm text-muted-foreground">
-                ${quote.price.toFixed(2)}
-              </p>
-            )}
-          </div>
-        </Link>
-
-        <WatchlistRemoveButton symbol={item.symbol} />
+        <div>
+          <h3 className="font-semibold text-lg">{item.symbol}</h3>
+          {quote && (
+            <p className="text-sm text-muted-foreground">
+              ${quote.price.toFixed(2)}
+            </p>
+          )}
+        </div>
+        <div>
+          <Link
+            href={`/stocks/${item.symbol}`}
+            className="hover:text-accent transition-colors cursor-pointer"
+          >
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 hover:bg-accent/10 hover:text-accent"
+            >
+              <ArrowBigRight className="h-4 w-4" />
+              <span className="sr-only">Remove from watchlist</span>
+            </Button>
+          </Link>
+          <WatchlistRemoveButton symbol={item.symbol} />
+        </div>
       </div>
 
       {quote ? (

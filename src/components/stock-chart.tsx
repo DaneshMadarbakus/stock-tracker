@@ -112,7 +112,7 @@ export function StockChart({ initialData, symbol }: StockChartProps) {
         </div>
 
         {/* Period Selection Buttons */}
-        <div className="flex gap-1">
+        <div className="flex gap-1 flex-wrap justify-end">
           {periods.map((period) => (
             <Button
               key={period.value}
