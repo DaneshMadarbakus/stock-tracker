@@ -66,7 +66,7 @@ export function StockSearch() {
           
           {!isLoading && results.length === 0 && query.length >= 2 && (
             <div className="p-3 text-sm text-muted-foreground">
-              No results found for "{query}"
+              No results found for &quot;{query}&quot;
             </div>
           )}
           
