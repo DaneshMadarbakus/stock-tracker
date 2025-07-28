@@ -149,30 +149,57 @@ export interface USMarketStatus {
 export async function getUSMarketStatus(): Promise<USMarketStatus> {
   try {
     const allMarkets = await getGlobalMarketStatus();
-    const usMarket = allMarkets.find(m => 
-      m.region.toLowerCase().includes('united states')
-    ) || allMarkets[0] || null;
+    const usMarket =
+      allMarkets.find((m) =>
+        m.region.toLowerCase().includes("united states")
+      ) ||
+      allMarkets[0] ||
+      null;
 
     if (!usMarket) {
       return {
         isOpen: false,
-        hours: '9:30 AM - 4:00 PM ET',
-        status: 'unknown',
+        hours: "9:30 AM - 4:00 PM ET",
+        status: "unknown",
       };
     }
 
     return {
-      isOpen: usMarket.current_status.toLowerCase() === 'open',
+      isOpen: usMarket.current_status.toLowerCase() === "open",
       hours: `${usMarket.local_open} - ${usMarket.local_close} ET`,
       status: usMarket.current_status,
     };
   } catch (error) {
-    console.error('Error fetching US market status:', error);
+    console.error("Error fetching US market status:", error);
     return {
       isOpen: false,
-      hours: '9:30 AM - 4:00 PM ET',
-      status: 'error',
+      hours: "9:30 AM - 4:00 PM ET",
+      status: "error",
     };
+  }
+}
+
+export async function getBulkQuotes(
+  symbols: string[]
+): Promise<Record<string, StockQuote | null>> {
+  try {
+    // Make individual quote calls for each symbol
+    const result: Record<string, StockQuote | null> = {};
+    const promises = symbols.map(async (symbol) => {
+      const quote = await getQuote(symbol);
+      result[symbol] = quote;
+    });
+
+    await Promise.all(promises);
+    return result;
+  } catch (error) {
+    console.error("Error fetching quotes:", error);
+    // Return empty results for all symbols on error
+    const result: Record<string, StockQuote | null> = {};
+    symbols.forEach((symbol) => {
+      result[symbol] = null;
+    });
+    return result;
   }
 }
 
@@ -182,7 +209,7 @@ export async function getQuote(symbol: string): Promise<StockQuote | null> {
     const response = await fetch(
       `${ALPHA_VANTAGE_BASE_URL}/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`,
       {
-        next: { revalidate: 900 }, // Cache for 15 minutes - matches historical data cache
+        next: { revalidate: 60 }, // Cache for 60 seconds - good for browsing experience
       }
     );
 

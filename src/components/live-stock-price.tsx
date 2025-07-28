@@ -1,6 +1,7 @@
 "use client";
 
 import { useFinnhubWebSocket } from "@/hooks/use-finnhub-websocket";
+import { getPriceChangeInfo } from "@/lib/price-utils";
 import type { USMarketStatus } from "@/api/alpha-vantage";
 
 interface LiveStockPriceProps {
@@ -24,8 +25,9 @@ export function LiveStockPrice({
       enabled: marketOpen,
     });
 
-  const hasIncrease = price > previousPrice;
-  const hasDecrease = price < previousPrice;
+  const priceInfo = price > 0 && previousPrice > 0 
+    ? getPriceChangeInfo(price, previousPrice) 
+    : null;
 
   // Use live data when market is open and connected, otherwise use fallback
   const displayPrice = marketOpen && isConnected ? price : fallbackPrice || 0;
@@ -85,9 +87,9 @@ export function LiveStockPrice({
         <div className="flex items-baseline gap-2">
           <span
             className={`text-3xl font-bold ${
-              hasIncrease
+              priceInfo?.isPositive
                 ? "text-green-600"
-                : hasDecrease
+                : priceInfo?.isNegative
                 ? "text-red-600"
                 : "text-primary"
             }`}
@@ -96,15 +98,15 @@ export function LiveStockPrice({
           </span>
 
           {/* Price Change Indicator */}
-          {marketOpen &&
-            isConnected &&
-            (hasIncrease ? (
-              <span className="text-green-600">↗</span>
-            ) : hasDecrease ? (
-              <span className="text-red-600">↘</span>
-            ) : (
-              <span className="text-gray-500">—</span>
-            ))}
+          {marketOpen && isConnected && priceInfo && (
+            <span className={
+              priceInfo.isPositive ? "text-green-600" : 
+              priceInfo.isNegative ? "text-red-600" : 
+              "text-gray-500"
+            }>
+              {priceInfo.isPositive ? "↗" : priceInfo.isNegative ? "↘" : "—"}
+            </span>
+          )}
 
           <span className="text-muted-foreground">USD</span>
           {!marketOpen && displayPrice > 0 && (
