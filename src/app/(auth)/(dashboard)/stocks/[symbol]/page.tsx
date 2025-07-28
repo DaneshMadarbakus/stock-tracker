@@ -1,21 +1,23 @@
 import { Suspense } from "react";
 import { BackButton } from "@/components/back-button";
-import { Button } from "@/components/ui/button";
 import { CompanyInfo } from "@/components/company-info";
 import { LiveStockPrice } from "@/components/live-stock-price";
 import { ChartServerWrapper } from "@/components/chart-server-wrapper";
 import { ChartSkeleton } from "@/components/chart-skeleton";
+import { AddToWatchlistButton } from "@/components/add-to-watchlist-button";
 import {
   getCompanyOverview,
   getUSMarketStatus,
   getQuote,
 } from "@/api/alpha-vantage";
+import { stackServerApp } from "@/stack";
 
 export default async function StockPage({
   params,
 }: {
   params: Promise<{ symbol: string }>;
 }) {
+  const user = await stackServerApp.getUser();
   const { symbol: rawSymbol } = await params;
   const symbol = rawSymbol.toUpperCase();
   const companyOverview = await getCompanyOverview(symbol);
@@ -56,9 +58,7 @@ export default async function StockPage({
               {companyOverview.name} • Real-time data and company information
             </p>
           </div>
-          <Button className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0">
-            Add to Watchlist
-          </Button>
+          <AddToWatchlistButton symbol={symbol} userId={user?.id || null} />
         </div>
       </div>
 
