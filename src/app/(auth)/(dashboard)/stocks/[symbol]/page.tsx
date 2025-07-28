@@ -5,7 +5,11 @@ import { CompanyInfo } from "@/components/company-info";
 import { LiveStockPrice } from "@/components/live-stock-price";
 import { ChartServerWrapper } from "@/components/chart-server-wrapper";
 import { ChartSkeleton } from "@/components/chart-skeleton";
-import { getCompanyProfile } from "@/api/finnhub";
+import {
+  getCompanyOverview,
+  getUSMarketStatus,
+  getQuote,
+} from "@/api/alpha-vantage";
 
 export default async function StockPage({
   params,
@@ -14,9 +18,9 @@ export default async function StockPage({
 }) {
   const { symbol: rawSymbol } = await params;
   const symbol = rawSymbol.toUpperCase();
-  const companyProfile = await getCompanyProfile(symbol);
+  const companyOverview = await getCompanyOverview(symbol);
 
-  if (!companyProfile) {
+  if (!companyOverview) {
     return (
       <div className="p-6">
         <BackButton />
@@ -25,13 +29,20 @@ export default async function StockPage({
             Stock Not Found
           </h1>
           <p className="text-muted-foreground">
-            Could not find data for symbol "{symbol}". Please check the symbol
-            and try again.
+            Could not find data for symbol &quot;{symbol}&quot;. Please check
+            the symbol and try again.
           </p>
         </div>
       </div>
     );
   }
+
+  // Get US market status (cleaner interface)
+  const marketStatus = await getUSMarketStatus();
+
+  // Only fetch quote when market is closed (for last close price)
+  // When open, we use WebSocket for live data
+  const quote = !marketStatus.isOpen ? await getQuote(symbol) : null;
 
   return (
     <div className="p-6">
@@ -42,7 +53,7 @@ export default async function StockPage({
           <div>
             <h1 className="text-3xl font-bold text-primary">{symbol}</h1>
             <p className="text-muted-foreground mt-2">
-              {companyProfile.name} • Real-time data and company information
+              {companyOverview.name} • Real-time data and company information
             </p>
           </div>
           <Button className="bg-accent text-accent-foreground hover:bg-accent/90 shrink-0">
@@ -53,10 +64,16 @@ export default async function StockPage({
 
       <div className="space-y-8">
         {/* Live Price Section */}
-        <LiveStockPrice symbol={symbol} />
+        <LiveStockPrice
+          symbol={symbol}
+          fallbackPrice={quote?.previousClose}
+          fallbackDate={quote?.tradingDay}
+          marketStatus={marketStatus}
+          exchangeName={companyOverview.exchange}
+        />
 
         {/* Company Information */}
-        <CompanyInfo profile={companyProfile} />
+        <CompanyInfo overview={companyOverview} />
 
         {/* Price Chart with Suspense */}
         <Suspense fallback={<ChartSkeleton />}>
