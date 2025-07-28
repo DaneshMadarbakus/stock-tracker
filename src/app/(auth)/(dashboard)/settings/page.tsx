@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
 export default function SettingsPage() {
   return (
     <div className="p-6">
@@ -7,22 +10,32 @@ export default function SettingsPage() {
           Manage your account and preferences
         </p>
       </div>
-      
+
       <div className="space-y-6">
         <div className="p-6 border rounded-lg bg-card">
           <h3 className="font-semibold text-primary mb-2">Profile Settings</h3>
-          <p className="text-muted-foreground">Account management coming soon...</p>
+          <p className="text-muted-foreground">
+            Account management coming soon...
+          </p>
         </div>
-        
+
         <div className="p-6 border rounded-lg bg-card">
           <h3 className="font-semibold text-primary mb-2">Notifications</h3>
-          <p className="text-muted-foreground">Notification preferences coming soon...</p>
+          <p className="text-muted-foreground">
+            Notification preferences coming soon...
+          </p>
         </div>
-        
+
         <div className="p-6 border rounded-lg bg-card">
           <h3 className="font-semibold text-primary mb-2">Data & Privacy</h3>
-          <p className="text-muted-foreground">Privacy settings coming soon...</p>
+          <p className="text-muted-foreground">
+            Privacy settings coming soon...
+          </p>
         </div>
+
+        <Link href="/handler/sign-out">
+          <Button variant="destructive">Logout</Button>
+        </Link>
       </div>
     </div>
   );

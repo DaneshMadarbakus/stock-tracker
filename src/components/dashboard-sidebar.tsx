@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Star, Settings, TrendingUp } from "lucide-react";
+import { BarChart3, Star, Settings, TrendingUp, LogIn } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -33,9 +33,19 @@ const navigationItems = [
     url: "/settings",
     icon: Settings,
   },
+  {
+    title: "Sign In",
+    url: "/handler/sign-in",
+    icon: LogIn,
+    forUnauthenticatedUsers: true,
+  },
 ];
 
-export function DashboardSidebar() {
+interface DashboardSidebarProps {
+  userId: string | null;
+}
+
+export function DashboardSidebar({ userId }: DashboardSidebarProps) {
   const pathname = usePathname();
   const { setOpenMobile } = useSidebar();
 
@@ -66,37 +76,42 @@ export function DashboardSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="space-y-1">
-              {navigationItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    className={`
-                      w-full rounded-lg transition-all duration-200
-                      ${
-                        pathname === item.url
-                          ? "bg-accent/10 text-accent border-accent/20 border shadow-sm"
-                          : "hover:bg-accent/5 hover:text-accent/80"
-                      }
-                    `}
-                  >
-                    <Link
-                      href={item.url}
-                      className="flex items-center space-x-3 p-3"
-                      onClick={handleLinkClick}
-                    >
-                      <item.icon
-                        className={`h-4 w-4 ${
+              {navigationItems.map((item) => {
+                // Don't show unauthenticated items if user is logged in
+                if (item.forUnauthenticatedUsers && userId) return null;
+                
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname === item.url}
+                      className={`
+                        w-full rounded-lg transition-all duration-200
+                        ${
                           pathname === item.url
-                            ? "text-accent"
-                            : "text-muted-foreground"
-                        }`}
-                      />
-                      <span className="font-medium">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                            ? "bg-accent/10 text-accent border-accent/20 border shadow-sm"
+                            : "hover:bg-accent/5 hover:text-accent/80"
+                        }
+                      `}
+                    >
+                      <Link
+                        href={item.url}
+                        className="flex items-center space-x-3 p-3"
+                        onClick={handleLinkClick}
+                      >
+                        <item.icon
+                          className={`h-4 w-4 ${
+                            pathname === item.url
+                              ? "text-accent"
+                              : "text-muted-foreground"
+                          }`}
+                        />
+                        <span className="font-medium">{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
