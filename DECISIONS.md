@@ -155,7 +155,7 @@ This document outlines the key architectural and implementation decisions for th
     - Smart data fetching: WebSocket for live data when US market open, fallback to Alpha Vantage quote API when closed
     - **Price Change Indicators**: Real-time visual feedback with green/red arrows and price coloring for live price movements
   - Consistent fetch() approach for REST APIs to preserve Next.js 15 benefits
-  - 1D timeframe disabled for MVP (requires intraday API endpoint) - shows product judgment over feature completeness
+  - 1D intraday timeframe requires additional API endpoint - deferred for MVP scope, shows product judgment over feature completeness
 - **Market Status**: US-focused market timing with simplified implementation
   - Alpha Vantage Market Status API for US market open/close status (no caching for critical timing)
   - **US Market Only**: Application focus shifted to US markets exclusively due to Alpha Vantage limitations
@@ -219,6 +219,7 @@ This document outlines the key architectural and implementation decisions for th
 | Optimistic UI Updates | Future    | Add optimistic updates to watchlist button for instant feedback before server confirmation               |
 | Error Toast Messages  | Future    | Replace console.error with user-friendly toast notifications for better UX                               |
 | Post-Login Redirect   | Future    | Redirect to stocks page or previous page after login instead of homepage for better UX flow             |
+| Unit/Integration Tests | Future    | Jest + RTL setup for component and API testing - deferred due to time constraints                       |
 | Billing / Payments    | Future    | Optional for monetization phase                                                                          |
 
 ---
