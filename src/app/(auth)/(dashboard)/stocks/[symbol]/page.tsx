@@ -11,6 +11,7 @@ import {
   getQuote,
 } from "@/api/alpha-vantage";
 import { stackServerApp } from "@/stack";
+import { isSymbolInWatchlist } from "@/actions/watchlist";
 
 export default async function StockPage({
   params,
@@ -46,6 +47,10 @@ export default async function StockPage({
   // When open, we use WebSocket for live data
   const quote = !marketStatus.isOpen ? await getQuote(symbol) : null;
 
+  // Check if symbol is in user's watchlist
+  const watchlistCheck = user ? await isSymbolInWatchlist(symbol) : { success: false, isInWatchlist: false };
+  const isInWatchlistValue = watchlistCheck.success ? watchlistCheck.isInWatchlist : false;
+
   return (
     <div className="p-6">
       <div className="mb-6">
@@ -58,7 +63,11 @@ export default async function StockPage({
               {companyOverview.name} • Real-time data and company information
             </p>
           </div>
-          <AddToWatchlistButton symbol={symbol} userId={user?.id || null} />
+          <AddToWatchlistButton 
+            symbol={symbol} 
+            userId={user?.id || null}
+            initialIsInWatchlist={isInWatchlistValue}
+          />
         </div>
       </div>
 
