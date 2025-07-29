@@ -1,8 +1,14 @@
 import Link from "next/link";
-import { getBulkQuotes } from "@/api/alpha-vantage";
+import { getBulkQuotes, type StockQuote } from "@/api/alpha-vantage";
 import { getPriceChangeInfo } from "@/lib/price-utils";
 
-const popularStocks = [
+interface PopularStock {
+  symbol: string;
+  name: string;
+  sector: string;
+}
+
+const popularStocks: PopularStock[] = [
   { symbol: "AAPL", name: "Apple Inc.", sector: "Technology" },
   { symbol: "TSLA", name: "Tesla Inc.", sector: "Automotive" },
   { symbol: "MSFT", name: "Microsoft Corporation", sector: "Technology" },
@@ -31,11 +37,8 @@ function StockCard({
   name,
   sector,
   quote,
-}: {
-  symbol: string;
-  name: string;
-  sector: string;
-  quote: any;
+}: PopularStock & {
+  quote: StockQuote | null;
 }) {
   if (!quote) {
     return <StockCardSkeleton symbol={symbol} name={name} sector={sector} />;
@@ -90,15 +93,7 @@ function StockCard({
   );
 }
 
-function StockCardSkeleton({
-  symbol,
-  name,
-  sector,
-}: {
-  symbol: string;
-  name: string;
-  sector: string;
-}) {
+function StockCardSkeleton({ symbol, name, sector }: PopularStock) {
   return (
     <div className="p-4 border rounded-lg bg-card">
       <div className="flex justify-between items-start mb-2">
