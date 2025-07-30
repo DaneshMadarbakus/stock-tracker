@@ -219,6 +219,10 @@ This document outlines the key architectural and implementation decisions for th
 | International Markets | Future    | Currently US-focused due to Alpha Vantage limitations - consider additional APIs for global coverage     |
 | Optimistic UI Updates | Future    | Add optimistic updates to watchlist button for instant feedback before server confirmation               |
 | Error Toast Messages  | Future    | Replace console.error with user-friendly toast notifications for better UX                               |
+| Error Monitoring      | Future    | Integrate Sentry or similar service for production error tracking and alerting                           |
+| Structured Logging    | Future    | Add contextual logging with user ID, actions, timestamps for better debugging                            |
+| Error Boundaries      | Future    | Implement React error boundaries for graceful crash recovery and fallback UI                            |
+| Error Classification  | Future    | Categorize errors (network, validation, server) with appropriate user messages and retry mechanisms     |
 | Post-Login Redirect   | Future    | Redirect to stocks page or previous page after login instead of homepage for better UX flow             |
 | Settings Page Features | Future    | Profile management, notification preferences, privacy settings - currently MVP placeholder with logout  |
 | Unit/Integration Tests | Future    | Jest + RTL setup for component and API testing - deferred due to time constraints                       |
