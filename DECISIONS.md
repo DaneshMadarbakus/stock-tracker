@@ -225,6 +225,7 @@ This document outlines the key architectural and implementation decisions for th
 | Error Classification  | Future    | Categorize errors (network, validation, server) with appropriate user messages and retry mechanisms     |
 | Post-Login Redirect   | Future    | Redirect to stocks page or previous page after login instead of homepage for better UX flow             |
 | Settings Page Features | Future    | Profile management, notification preferences, privacy settings - currently MVP placeholder with logout  |
+| Constants Extraction  | Future    | Extract hardcoded strings (API endpoints, error messages, cache keys) into constants file for maintainability |
 | Unit/Integration Tests | Future    | Jest + RTL setup for component and API testing - deferred due to time constraints                       |
 | Billing / Payments    | Future    | Optional for monetization phase                                                                          |
 
